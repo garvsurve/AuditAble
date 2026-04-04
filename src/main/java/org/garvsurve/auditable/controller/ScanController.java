@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api/scan")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin(origins = "*")
 public class ScanController {
 
     private final ScanService scanService;

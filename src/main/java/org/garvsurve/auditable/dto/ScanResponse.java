@@ -1,6 +1,5 @@
 package org.garvsurve.auditable.dto;
 
-
 import lombok.Builder;
 import lombok.Data;
 import org.garvsurve.auditable.model.Issue;
@@ -15,4 +14,14 @@ public class ScanResponse {
     private int totalIssues;
     private List<Issue> issues;
     private ScoreBreakdown breakdown;
+    private ScanMetadata metadata;
+
+    @Data
+    @Builder
+    public static class ScanMetadata {
+        private String scannedUrl;
+        private String timestamp;
+        private int totalIssues;
+        private long durationMs;
+    }
 }

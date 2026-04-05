@@ -25,7 +25,8 @@ const CategoryBreakdown = ({ breakdown }) => {
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', flex: 1, justifyContent: 'center' }}>
         {categories.map((cat, index) => {
-          const score = breakdown[cat.key] !== undefined ? breakdown[cat.key] : 100;
+          const scores = breakdown.categoryScores || breakdown;
+          const score = scores[cat.key] !== undefined ? scores[cat.key] : 100;
           const Icon = cat.icon;
           
           return (

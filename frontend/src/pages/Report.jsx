@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Download, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Download, ExternalLink, Loader2 } from 'lucide-react';
 import ScoreCard from '../components/ScoreCard';
 import CategoryBreakdown from '../components/CategoryBreakdown';
 import IssueList from '../components/IssueList';
@@ -22,9 +22,13 @@ const Report = () => {
 
   if (!result || !url) return null;
 
+  const [downloading, setDownloading] = useState(false);
+
   const handleDownload = () => {
+    setDownloading(true);
     const pdfUrl = getPdfReportUrl(url);
     window.open(pdfUrl, '_blank');
+    setTimeout(() => setDownloading(false), 2000);
   };
 
   const containerVariants = {
@@ -99,6 +103,7 @@ const Report = () => {
 
         <button
           onClick={handleDownload}
+          disabled={downloading}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -109,14 +114,19 @@ const Report = () => {
             padding: '10px 20px',
             borderRadius: 'var(--border-radius-sm)',
             fontWeight: '600',
-            cursor: 'pointer',
+            cursor: downloading ? 'not-allowed' : 'pointer',
+            opacity: downloading ? 0.7 : 1,
             transition: 'background-color 0.2s',
             boxShadow: '0 4px 14px rgba(99, 102, 241, 0.4)'
           }}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-secondary)'}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-primary)'}
+          onMouseOver={(e) => !downloading && (e.currentTarget.style.backgroundColor = 'var(--accent-secondary)')}
+          onMouseOut={(e) => !downloading && (e.currentTarget.style.backgroundColor = 'var(--accent-primary)')}
         >
-          <Download size={18} /> Download PDF
+          {downloading ? (
+            <><Loader2 size={18} className="animate-spin" /> Downloading...</>
+          ) : (
+            <><Download size={18} /> Download PDF</>
+          )}
         </button>
       </motion.div>
 

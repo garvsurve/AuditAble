@@ -157,11 +157,6 @@ You can test the analyzer by pointing it at:
 
 ---
 
-## 📝 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-
 <div align="center">
 
 Built with ❤️ by **Garv Surve**

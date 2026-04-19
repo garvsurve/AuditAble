@@ -23,11 +23,14 @@ public class HeadingStructureRule implements Rule {
             
             if (prevLevel > 0 && currentLevel - prevLevel > 1) {
                 issues.add(Issue.builder()
-                        .type("Skipped Heading Level")
-                        .message("Heading level skips from H" + prevLevel + " to H" + currentLevel)
+                        .type("[WCAG 1.3.1, 2.4.6] Skipped Heading Level")
+                        .wcag("1.3.1, 2.4.6")
+                        .message("[WCAG 1.3.1, 2.4.6] Heading level skips from H" + prevLevel + " to H" + currentLevel)
                         .severity(Severity.MEDIUM)
                         .category(Category.STRUCTURE)
                         .element(heading.outerHtml())
+                        .suggestion("Use headings in order (H1 → H2 → H3 …) without skipping levels. " +
+                                    "Heading hierarchy communicates page structure to screen readers.")
                         .build());
             }
             prevLevel = currentLevel;

@@ -31,11 +31,14 @@ public class LinkTextRule implements Rule {
 
             if (!hasText && !hasAriaLabel && !hasImageWithAlt) {
                 issues.add(Issue.builder()
-                        .type("Empty Link")
-                        .message("Link contains no readable text or image with alt text")
+                        .type("[WCAG 2.4.4] Empty Link")
+                        .wcag("2.4.4")
+                        .message("[WCAG 2.4.4] Link contains no readable text or image with alt text")
                         .severity(Severity.HIGH)
                         .category(Category.LINKS)
                         .element(link.outerHtml())
+                        .suggestion("Add descriptive text inside <a> or use aria-label=\"Destination description\". " +
+                                    "If the link contains only an image, add alt text to that image.")
                         .build());
             }
         }

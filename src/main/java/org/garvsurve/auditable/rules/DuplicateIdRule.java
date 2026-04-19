@@ -35,8 +35,9 @@ public class DuplicateIdRule implements Rule {
                 int count = entry.getValue().size();
 
                 issues.add(Issue.builder()
-                        .type("Duplicate ID")
-                        .message("The id=\"" + duplicateId + "\" appears " + count + " times in the document. IDs must be unique.")
+                        .type("[WCAG 4.1.1] Duplicate ID")
+                        .wcag("4.1.1")
+                        .message("[WCAG 4.1.1] The id=\"" + duplicateId + "\" appears " + count + " times in the document. IDs must be unique.")
                         .severity(Severity.HIGH)
                         .category(Category.STRUCTURE)
                         .element(truncate(entry.getValue().get(0).outerHtml()))

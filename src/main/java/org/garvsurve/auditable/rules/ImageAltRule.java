@@ -19,11 +19,14 @@ public class ImageAltRule implements Rule {
         for (Element img : doc.select("img")) {
             if (!img.hasAttr("alt") || img.attr("alt").isEmpty()) {
                 issues.add(Issue.builder()
-                        .type("Image Alt Missing")
-                        .message("Image missing alt attribute")
+                        .type("[WCAG 1.1.1] Image Alt Missing")
+                        .wcag("1.1.1")
+                        .message("[WCAG 1.1.1] Image missing alt attribute")
                         .severity(org.garvsurve.auditable.model.Severity.HIGH)
                         .category(org.garvsurve.auditable.model.Category.IMAGES)
                         .element(img.outerHtml())
+                        .suggestion("Add alt=\"description\" to every meaningful image. " +
+                                    "Use alt=\"\" (empty) for decorative images.")
                         .build());
             }
         }

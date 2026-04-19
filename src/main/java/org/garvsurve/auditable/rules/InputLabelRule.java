@@ -26,11 +26,14 @@ public class InputLabelRule implements Rule {
 
             if (!hasAriaLabel && !hasAriaLabelledBy && !hasDirectLabel && !isWrappedInLabel) {
                 issues.add(Issue.builder()
-                        .type("Input Label Missing")
-                        .message("Input element is missing an associated label")
+                        .type("[WCAG 1.3.1, 3.3.2] Input Label Missing")
+                        .wcag("1.3.1, 3.3.2")
+                        .message("[WCAG 1.3.1, 3.3.2] Input element is missing an associated label")
                         .severity(Severity.HIGH)
                         .category(Category.FORMS)
                         .element(input.outerHtml())
+                        .suggestion("Add <label for=\"inputId\">Label text</label> and ensure the input has a " +
+                                    "matching id, or use aria-label directly on the element.")
                         .build());
             }
         }

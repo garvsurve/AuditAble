@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  AuditAble — Deliberately Inaccessible Test Page                    ║
+  ║  Purpose : trigger every rule implemented in the audit engine       ║
+  ║  DO NOT use this page as a template — it is intentionally broken!   ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+
+  Rules triggered:
+    ✗ ColorContrastRule       — light gray text on white background
+    ✗ FormLabelRule           — unlabelled inputs + placeholder-only input
+    ✗ VagueLinkTextRule       — "click here", "read more", "here"
+    ✗ ButtonAccessibilityRule — empty button + icon-only button
+    ✗ ImageAltRule            — <img> with no alt attribute
+    ✗ LinkTextRule            — <a href> with no text
+    ✗ HeadingStructureRule    — skips h1 → h3 → h5 with no h2/h4
+    ✗ LandmarkRule            — no <header>, <nav>, <main>, <footer>
+    ✗ TitleRule               — no meaningful <title>
+    ✗ DuplicateIdRule         — id="username" appears twice
+    ✗ AriaRoleRule            — invalid ARIA role
+    ✗ FormInputAccessibility  — radio inputs without fieldset/legend
+-->
+<html lang="en">
+<head>
+  <!-- TitleRule: empty / missing title -->
+  <title></title>
+  <meta charset="UTF-8" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     NO LANDMARKS — triggers LandmarkRule (header, nav, main, footer)
+     ═══════════════════════════════════════════════════════════════════ -->
+
+<!-- ───────────────────────────────────────────────────────────────────
+     1. ColorContrastRule (WCAG 1.4.3)
+     Light gray text on white background — near-zero brightness diff
+     ─────────────────────────────────────────────────────────────────── -->
+<div>
+  <p style="color: lightgray; background-color: white;">
+    This text is light gray on white. Almost invisible. Low contrast.
+  </p>
+  <p style="color: #dddddd; background-color: #ffffff;">
+    Another low-contrast paragraph (#ddd on #fff).
+  </p>
+  <p style="color: #eeeeee; background-color: #f5f5f5;">
+    Barely visible: very light text on near-white background.
+  </p>
+  <p style="color: #222222; background-color: #111111;">
+    Dark on dark — also a contrast failure.
+  </p>
+</div>
+
+<!-- ───────────────────────────────────────────────────────────────────
+     2. FormLabelRule (WCAG 1.3.1, 3.3.2)
+     ─────────────────────────────────────────────────────────────────── -->
+<div>
+  <!-- No id → no label[for] can reference it; no aria-label either -->
+  <input type="text" />
+
+  <!-- Has id but no matching <label for="email"> exists -->
+  <input type="email" id="email" />
+
+  <!-- Placeholder-only — common antipattern -->
+  <input type="text" placeholder="Enter your name" />
+  <textarea placeholder="Write your message here..."></textarea>
+
+  <!-- Select with no label -->
+  <select>
+    <option>Option 1</option>
+    <option>Option 2</option>
+  </select>
+
+  <!-- DuplicateIdRule: same id used twice -->
+  <input type="text" id="username" placeholder="First username field" />
+  <input type="password" id="username" placeholder="Second field — duplicate id!" />
+</div>
+
+<!-- ───────────────────────────────────────────────────────────────────
+     3. VagueLinkTextRule (WCAG 2.4.4)
+     ─────────────────────────────────────────────────────────────────── -->
+<div>
+  <a href="/article">Click here</a>
+  <a href="/blog">Read more</a>
+  <a href="/docs">Here</a>
+  <a href="/info">Link</a>
+  <a href="/guide">Learn more</a>
+  <a href="/details">More info</a>
+  <a href="/page">Continue</a>
+</div>
+
+<!-- ───────────────────────────────────────────────────────────────────
+     4. LinkTextRule — empty links (WCAG 2.4.4)
+     ─────────────────────────────────────────────────────────────────── -->
+<div>
+  <!-- No text, no aria-label, no img with alt -->
+  <a href="/empty-link-one"></a>
+  <a href="/empty-link-two"><img src="icon.png" /></a>
+</div>
+
+<!-- ───────────────────────────────────────────────────────────────────
+     5. ButtonAccessibilityRule (WCAG 4.1.2)
+     ─────────────────────────────────────────────────────────────────── -->
+<div>
+  <!-- Completely empty button -->
+  <button></button>
+
+  <!-- Icon-only with SVG — no aria-label -->
+  <button>
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+      <path d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  </button>
+
+  <!-- Icon-only with <i> tag — no aria-label -->
+  <button><i class="fa fa-trash"></i></button>
+
+  <!-- aria-hidden text — visible text is hidden from AT -->
+  <button><span aria-hidden="true">✕</span></button>
+</div>
+
+<!-- ───────────────────────────────────────────────────────────────────
+     6. ImageAltRule (WCAG 1.1.1)
+     ─────────────────────────────────────────────────────────────────── -->
+<div>
+  <img src="logo.png" />
+  <img src="banner.jpg" />
+  <img src="team-photo.jpeg" alt="" />  <!-- empty alt, decorative? no role="presentation" -->
+</div>
+
+<!-- ───────────────────────────────────────────────────────────────────
+     7. HeadingStructureRule — skips heading levels
+     ─────────────────────────────────────────────────────────────────── -->
+<div>
+  <!-- No <h1> at all — jumps straight to h3 -->
+  <h3>Section Title</h3>
+  <!-- Then skips to h5 -->
+  <h5>Subsection</h5>
+</div>
+
+<!-- ───────────────────────────────────────────────────────────────────
+     8. AriaRoleRule — invalid ARIA role
+     ─────────────────────────────────────────────────────────────────── -->
+<div role="superman">This element has a made-up ARIA role.</div>
+<div role="clickable">Another invalid role.</div>
+
+<!-- ───────────────────────────────────────────────────────────────────
+     9. FormInputAccessibilityRule — radio group without fieldset/legend
+     ─────────────────────────────────────────────────────────────────── -->
+<div>
+  <input type="radio" name="gender" id="male" value="male" />
+  <label for="male">Male</label>
+  <input type="radio" name="gender" id="female" value="female" />
+  <label for="female">Female</label>
+  <!-- No <fieldset> or <legend> wrapping this radio group -->
+</div>
+
+</body>
+</html>

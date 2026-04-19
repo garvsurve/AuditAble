@@ -45,6 +45,7 @@ public class ScanService {
             try {
                 log.debug("Running rule: {}", ruleName);
                 List<Issue> ruleIssues = rule.check(doc);
+                ruleIssues.forEach(i -> i.setRule(ruleName));
                 log.debug("Rule '{}' produced {} issue(s)", ruleName, ruleIssues.size());
                 allIssues.addAll(ruleIssues);
             } catch (Exception e) {

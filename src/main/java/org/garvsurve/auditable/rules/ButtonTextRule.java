@@ -23,11 +23,14 @@ public class ButtonTextRule implements Rule {
 
             if (!hasText && !hasAriaLabel) {
                 issues.add(Issue.builder()
-                        .type("Empty Button")
-                        .message("Button is empty or missing discernible text")
+                        .type("[WCAG 4.1.2] Empty Button")
+                        .wcag("4.1.2")
+                        .message("[WCAG 4.1.2] Button is empty or missing discernible text")
                         .severity(Severity.HIGH)
                         .category(Category.FORMS)
                         .element(button.outerHtml())
+                        .suggestion("Add visible text inside the <button>, or use aria-label=\"Action description\" " +
+                                    "for icon-only buttons.")
                         .build());
             }
         }

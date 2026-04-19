@@ -41,8 +41,9 @@ public class AriaRoleRule implements Rule {
 
             if (role.isEmpty()) {
                 issues.add(Issue.builder()
-                        .type("ARIA Role Empty")
-                        .message("Element has an empty role attribute which is invalid.")
+                        .type("[WCAG 4.1.2] ARIA Role Empty")
+                        .wcag("4.1.2")
+                        .message("[WCAG 4.1.2] Element has an empty role attribute which is invalid.")
                         .severity(Severity.MEDIUM)
                         .category(Category.STRUCTURE)
                         .element(truncate(el.outerHtml()))
@@ -50,8 +51,9 @@ public class AriaRoleRule implements Rule {
                         .build());
             } else if (!VALID_ROLES.contains(role)) {
                 issues.add(Issue.builder()
-                        .type("ARIA Role Invalid")
-                        .message("Unknown ARIA role '" + role + "' on <" + el.tagName() + "> element.")
+                        .type("[WCAG 4.1.2] ARIA Role Invalid")
+                        .wcag("4.1.2")
+                        .message("[WCAG 4.1.2] Unknown ARIA role '" + role + "' on <" + el.tagName() + "> element.")
                         .severity(Severity.HIGH)
                         .category(Category.STRUCTURE)
                         .element(truncate(el.outerHtml()))

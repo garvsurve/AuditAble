@@ -37,8 +37,9 @@ public class FormInputAccessibilityRule implements Rule {
                     && !hasDirectLabel && !isWrappedInLabel) {
 
                 issues.add(Issue.builder()
-                        .type("Form Input Inaccessible")
-                        .message("Input element of type '" + inputType(input) +
+                        .type("[WCAG 1.3.1, 3.3.2] Form Input Inaccessible")
+                        .wcag("1.3.1, 3.3.2")
+                        .message("[WCAG 1.3.1, 3.3.2] Input element of type '" + inputType(input) +
                                  "' has no aria-label, placeholder, or associated <label>.")
                         .severity(Severity.HIGH)
                         .category(Category.FORMS)

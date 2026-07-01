@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Search, Filter } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import IssueCard from './IssueCard';
 
 const IssueList = ({ issues = [] }) => {
@@ -8,12 +7,10 @@ const IssueList = ({ issues = [] }) => {
   const [severityFilter, setSeverityFilter] = useState('ALL');
 
   const filteredIssues = issues.filter(issue => {
-    // Search match
     const matchesSearch =
       (issue.message || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
       (issue.type || '').toLowerCase().includes(searchTerm.toLowerCase());
 
-    // Severity match
     const matchesSeverity =
       severityFilter === 'ALL' ||
       (issue.severity || '').toUpperCase() === severityFilter;
@@ -22,72 +19,48 @@ const IssueList = ({ issues = [] }) => {
   });
 
   return (
-    <div className="glass-effect" style={{
-      padding: '2rem',
-      borderRadius: 'var(--border-radius-lg)',
-      marginTop: '2rem'
-    }}>
+    <div style={{ marginTop: '4rem', borderTop: '4px solid var(--border-color)' }}>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '1.5rem',
+        padding: '1.5rem 0',
+        borderBottom: '2px solid var(--border-color)',
         flexWrap: 'wrap',
         gap: '1rem'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <h3 style={{ color: 'var(--text-primary)', fontSize: '1.25rem' }}>Identified Issues</h3>
-          <span style={{
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            padding: '2px 10px',
-            borderRadius: '99px',
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
+          <h2 className="font-serif" style={{ fontSize: '2rem', margin: 0, textTransform: 'none' }}>Detailed Findings</h2>
+          <span className="font-mono" style={{
             fontSize: '0.85rem',
-            color: 'var(--text-secondary)',
-            fontWeight: '600'
+            fontWeight: 700,
+            border: '1px solid var(--border-color)',
+            padding: '2px 8px',
           }}>
-            {filteredIssues.length}
+            {filteredIssues.length} ISSUES
           </span>
         </div>
 
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          {/* Search box */}
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
           <div style={{ position: 'relative' }}>
-            <Search size={16} color="var(--text-tertiary)" style={{ position: 'absolute', left: '12px', top: '10px' }} />
+            <Search size={16} strokeWidth={1.5} style={{ position: 'absolute', left: '0', bottom: '10px' }} />
             <input
               type="text"
-              placeholder="Search issues..."
+              placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{
-                backgroundColor: 'rgba(0,0,0,0.2)',
-                border: '1px solid var(--border-color)',
-                borderRadius: 'var(--border-radius-sm)',
-                padding: '8px 12px 8px 36px',
-                color: 'var(--text-primary)',
-                fontSize: '0.9rem',
-                outline: 'none',
-                width: '200px'
-              }}
+              className="news-input"
+              style={{ paddingLeft: '24px', width: '200px', fontSize: '0.9rem' }}
             />
           </div>
 
-          {/* Filter dropdown */}
           <div style={{ position: 'relative' }}>
-            <Filter size={16} color="var(--text-tertiary)" style={{ position: 'absolute', left: '12px', top: '10px' }} />
+            <Filter size={16} strokeWidth={1.5} style={{ position: 'absolute', left: '0', bottom: '10px' }} />
             <select
               value={severityFilter}
               onChange={(e) => setSeverityFilter(e.target.value)}
-              style={{
-                backgroundColor: 'rgba(0,0,0,0.2)',
-                border: '1px solid var(--border-color)',
-                borderRadius: 'var(--border-radius-sm)',
-                padding: '8px 12px 8px 36px',
-                color: 'var(--text-primary)',
-                fontSize: '0.9rem',
-                outline: 'none',
-                appearance: 'none',
-                cursor: 'pointer'
-              }}
+              className="news-input"
+              style={{ paddingLeft: '24px', appearance: 'none', cursor: 'pointer', fontSize: '0.9rem' }}
             >
               <option value="ALL">All Severities</option>
               <option value="HIGH">High Severity</option>
@@ -98,29 +71,27 @@ const IssueList = ({ issues = [] }) => {
         </div>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <AnimatePresence>
-          {filteredIssues.length > 0 ? (
-            filteredIssues.map((issue, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-              >
-                <IssueCard issue={issue} />
-              </motion.div>
-            ))
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-tertiary)' }}
-            >
-              <p>No issues found matching your criteria.</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+        borderBottom: '1px solid var(--border-color)',
+        borderLeft: '1px solid var(--border-color)'
+      }}>
+        {filteredIssues.length > 0 ? (
+          filteredIssues.map((issue, idx) => (
+            <IssueCard key={idx} issue={issue} />
+          ))
+        ) : (
+          <div style={{ 
+            gridColumn: '1 / -1',
+            padding: '4rem 2rem', 
+            textAlign: 'center',
+            borderRight: '1px solid var(--border-color)',
+            borderBottom: '1px solid var(--border-color)'
+          }}>
+            <p className="font-serif" style={{ fontSize: '1.5rem', color: 'var(--text-secondary)' }}>No issues found matching the criteria.</p>
+          </div>
+        )}
       </div>
     </div>
   );

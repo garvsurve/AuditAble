@@ -1,61 +1,82 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Layout, Image, Link, Type } from 'lucide-react';
 
 const CategoryBreakdown = ({ breakdown }) => {
-  // If breakdown isn't provided directly, handle gracefully
   if (!breakdown) return null;
 
   const categories = [
-    { key: 'STRUCTURE', label: 'Structure', icon: Layout, color: '#6366f1' },
-    { key: 'IMAGES', label: 'Images & Media', icon: Image, color: '#f59e0b' },
-    { key: 'LINKS', label: 'Links & Navigation', icon: Link, color: '#10b981' },
-    { key: 'FORMS', label: 'Forms & Inputs', icon: Type, color: '#ec4899' },
+    { key: 'STRUCTURE', label: 'Structure', icon: Layout },
+    { key: 'IMAGES', label: 'Images & Media', icon: Image },
+    { key: 'LINKS', label: 'Links & Nav', icon: Link },
+    { key: 'FORMS', label: 'Forms & Inputs', icon: Type },
   ];
 
   return (
-    <div className="glass-effect" style={{
-      padding: '2rem',
-      borderRadius: 'var(--border-radius-lg)',
+    <div className="news-card sharp-corners" style={{
       height: '100%',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      padding: 0 // Remove default padding for grid
     }}>
-      <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-secondary)' }}>Category Breakdown</h3>
+      <div style={{
+        padding: '1.5rem',
+        borderBottom: '4px solid var(--border-color)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'baseline'
+      }}>
+        <h3 className="font-sans" style={{ fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>
+          Category Breakdown
+        </h3>
+        <span className="font-mono" style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em' }}>FIG. 2</span>
+      </div>
       
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', flex: 1, justifyContent: 'center' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {categories.map((cat, index) => {
           const scores = breakdown.categoryScores || breakdown;
           const score = scores[cat.key] !== undefined ? scores[cat.key] : 100;
           const Icon = cat.icon;
+          const isLast = index === categories.length - 1;
           
           return (
-            <div key={cat.key}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-primary)' }}>
-                  <Icon size={16} color={cat.color} />
-                  <span style={{ fontSize: '0.95rem', fontWeight: '500' }}>{cat.label}</span>
-                </div>
-                <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>{score}%</span>
+            <div key={cat.key} style={{ 
+              display: 'flex', 
+              alignItems: 'center',
+              borderBottom: isLast ? 'none' : '1px solid var(--border-color)',
+              padding: '1rem 1.5rem',
+              flex: 1
+            }}>
+              <div style={{ 
+                border: '1px solid var(--border-color)', 
+                width: '40px', 
+                height: '40px', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                marginRight: '1rem',
+                flexShrink: 0
+              }}>
+                <Icon size={20} strokeWidth={1.5} />
               </div>
               
-              <div style={{ 
-                height: '8px', 
-                backgroundColor: 'rgba(255,255,255,0.05)', 
-                borderRadius: '4px',
-                overflow: 'hidden'
-              }}>
-                <motion.div 
-                  initial={{ width: 0 }}
-                  animate={{ width: `${score}%` }}
-                  transition={{ duration: 1, delay: 0.2 + (index * 0.1) }}
-                  style={{ 
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.25rem' }}>
+                  <span className="font-serif" style={{ fontSize: '1.25rem', fontWeight: 600 }}>{cat.label}</span>
+                  <span className="font-mono" style={{ fontSize: '1rem', fontWeight: 700 }}>{score}%</span>
+                </div>
+                
+                <div style={{ 
+                  height: '4px', 
+                  backgroundColor: 'var(--neutral-200)',
+                  width: '100%'
+                }}>
+                  <div style={{ 
                     height: '100%', 
-                    backgroundColor: cat.color,
-                    borderRadius: '4px',
-                    boxShadow: `0 0 10px ${cat.color}80` 
-                  }}
-                />
+                    backgroundColor: 'var(--text-primary)',
+                    width: `${score}%`,
+                    transition: 'width 0.5s ease-out'
+                  }} />
+                </div>
               </div>
             </div>
           );

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowLeft, Download, ExternalLink, Loader2 } from 'lucide-react';
+import { ArrowLeft, Download, ExternalLink } from 'lucide-react';
 import ScoreCard from '../components/ScoreCard';
 import CategoryBreakdown from '../components/CategoryBreakdown';
 import IssueList from '../components/IssueList';
+import ThemeToggle from '../components/ThemeToggle';
 import { getPdfReportUrl } from '../services/api';
 
 const Report = () => {
@@ -13,7 +13,6 @@ const Report = () => {
 
   const { result, url } = location.state || {};
 
-  // Redirect to home if no valid state
   useEffect(() => {
     if (!result || !url) {
       navigate('/');
@@ -31,125 +30,109 @@ const Report = () => {
     setTimeout(() => setDownloading(false), 2000);
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-  };
-
   return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-      style={{ padding: '2rem 0', maxWidth: '1200px', margin: '0 auto' }}
-    >
+    <div className="newsprint-texture" style={{ minHeight: '100vh', paddingBottom: '4rem' }}>
       {/* Header */}
-      <motion.div variants={itemVariants} style={{
+      <header style={{
+        borderBottom: '4px solid var(--border-color)',
+        padding: '1rem 2rem',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '2rem',
-        flexWrap: 'wrap',
-        gap: '1rem'
+        backgroundColor: 'var(--bg-primary)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 40
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
           <button
             onClick={() => navigate('/')}
+            className="news-button-outline"
             style={{
-              background: 'none',
-              border: 'none',
-              color: 'var(--text-secondary)',
-              cursor: 'pointer',
+              padding: '8px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '8px',
-              borderRadius: '50%',
-              backgroundColor: 'rgba(255,255,255,0.05)',
-              transition: 'all 0.2s'
+              border: '1px solid var(--border-color)',
+              cursor: 'pointer'
             }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'}
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={20} strokeWidth={1.5} />
           </button>
+          
           <div>
-            <h1 style={{ fontSize: '1.75rem', color: 'var(--text-primary)', marginBottom: '4px' }}>Analysis Report</h1>
+            <div className="font-mono" style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '2px' }}>
+              Special Report
+            </div>
             <a
               href={url}
               target="_blank"
               rel="noopener noreferrer"
+              className="font-serif hover:underline"
               style={{
-                color: 'var(--accent-primary)',
+                color: 'var(--text-primary)',
                 textDecoration: 'none',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '4px',
-                fontSize: '0.9rem'
+                gap: '8px',
+                fontSize: '1.25rem',
+                fontWeight: 600
               }}
             >
-              {url} <ExternalLink size={14} />
+              {url} <ExternalLink size={16} strokeWidth={1.5} />
             </a>
           </div>
         </div>
 
-        <button
-          onClick={handleDownload}
-          disabled={downloading}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            backgroundColor: 'var(--accent-primary)',
-            color: 'white',
-            border: 'none',
-            padding: '10px 20px',
-            borderRadius: 'var(--border-radius-sm)',
-            fontWeight: '600',
-            cursor: downloading ? 'not-allowed' : 'pointer',
-            opacity: downloading ? 0.7 : 1,
-            transition: 'background-color 0.2s',
-            boxShadow: '0 4px 14px rgba(99, 102, 241, 0.4)'
-          }}
-          onMouseOver={(e) => !downloading && (e.currentTarget.style.backgroundColor = 'var(--accent-secondary)')}
-          onMouseOut={(e) => !downloading && (e.currentTarget.style.backgroundColor = 'var(--accent-primary)')}
-        >
-          {downloading ? (
-            <><Loader2 size={18} className="animate-spin" /> Downloading...</>
-          ) : (
-            <><Download size={18} /> Download PDF</>
-          )}
-        </button>
-      </motion.div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <ThemeToggle />
+          <button
+            onClick={handleDownload}
+            disabled={downloading}
+            className="news-button"
+            style={{ display: 'flex', gap: '8px', alignItems: 'center' }}
+          >
+            {downloading ? (
+              <span>PRINTING...</span>
+            ) : (
+              <><Download size={18} strokeWidth={1.5} /> <span>DOWNLOAD PDF</span></>
+            )}
+          </button>
+        </div>
+      </header>
 
-      {/* Top Grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gap: '2rem'
-      }}>
-        <motion.div variants={itemVariants}>
-          <ScoreCard score={result.score !== undefined ? result.score : 0} />
-        </motion.div>
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '2rem' }}>
+        
+        <div className="py-8 text-center font-serif text-2xl text-neutral-400 tracking-[1em]" style={{ letterSpacing: '1em', color: 'var(--text-muted)' }}>
+          &#x2727; &#x2727; &#x2727;
+        </div>
 
-        <motion.div variants={itemVariants}>
-          <CategoryBreakdown breakdown={result.breakdown} />
-        </motion.div>
+        <h1 style={{ textAlign: 'center', marginBottom: '3rem', fontSize: '5rem' }}>
+          ANALYSIS REPORT
+        </h1>
+
+        {/* Top Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          borderTop: '2px solid var(--border-color)',
+          borderLeft: '1px solid var(--border-color)'
+        }}>
+          <div style={{ borderRight: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
+            <ScoreCard score={result.score !== undefined ? result.score : 0} />
+          </div>
+
+          <div style={{ borderRight: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
+            <CategoryBreakdown breakdown={result.breakdown} />
+          </div>
+        </div>
+
+        {/* Issues List */}
+        <div style={{ marginTop: '2rem' }}>
+          <IssueList issues={result.issues} />
+        </div>
       </div>
-
-      {/* Issues List */}
-      <motion.div variants={itemVariants}>
-        <IssueList issues={result.issues} />
-      </motion.div>
-    </motion.div>
+    </div>
   );
 };
 

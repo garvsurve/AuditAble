@@ -5,131 +5,108 @@ const IssueCard = ({ issue }) => {
   const getSeverityStyles = (severity) => {
     switch (severity?.toUpperCase()) {
       case 'HIGH':
-        return { color: 'var(--danger-color)', bg: 'var(--danger-bg)', icon: AlertCircle };
+        return { color: 'var(--accent-primary)', icon: AlertCircle, label: 'HIGH' };
       case 'MEDIUM':
-        return { color: 'var(--warning-color)', bg: 'var(--warning-bg)', icon: AlertTriangle };
+        return { color: 'var(--text-primary)', icon: AlertTriangle, label: 'MED' };
       case 'LOW':
       default:
-        return { color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.1)', icon: Info };
+        return { color: 'var(--text-secondary)', icon: Info, label: 'LOW' };
     }
   };
 
   const severityStyle = getSeverityStyles(issue.severity);
   const Icon = severityStyle.icon;
 
-
   return (
-    <div style={{
-      backgroundColor: 'rgba(20, 20, 22, 0.4)',
-      border: `1px solid ${severityStyle.bg}`,
-      borderRadius: 'var(--border-radius-md)',
+    <div className="hard-shadow-hover" style={{
+      backgroundColor: 'var(--bg-primary)',
+      borderRight: '1px solid var(--border-color)',
+      borderBottom: '1px solid var(--border-color)',
       padding: '1.5rem',
-      marginBottom: '1rem',
-      transition: 'all 0.2s',
+      display: 'flex',
+      flexDirection: 'column'
     }}>
-      {/* ── Header row: icon + title + badges ── */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
           <div style={{
-            backgroundColor: severityStyle.bg,
+            border: '1px solid var(--border-color)',
             padding: '8px',
-            borderRadius: '8px',
             color: severityStyle.color,
             flexShrink: 0,
+            backgroundColor: 'var(--bg-primary)'
           }}>
-            <Icon size={20} />
+            <Icon size={20} strokeWidth={1.5} />
           </div>
           <div>
-            <h4 style={{ color: 'var(--text-primary)', fontSize: '1.1rem', marginBottom: '6px' }}>
-              {issue.type || 'Accessibility Issue'}
-            </h4>
-
-            {/* ── Badge row: rule + severity ── */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              {/* Rule badge */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '8px' }}>
+              <span className="news-badge" style={{
+                backgroundColor: severityStyle.color === 'var(--accent-primary)' ? 'var(--accent-primary)' : 'var(--text-primary)',
+                color: 'var(--bg-primary)'
+              }}>
+                {severityStyle.label}
+              </span>
+              
               {issue.rule && (
-                <span style={{
-                  display: 'inline-block',
+                <span className="font-mono" style={{
                   fontSize: '0.72rem',
                   fontWeight: '600',
-                  padding: '2px 8px',
-                  backgroundColor: 'rgba(255,255,255,0.06)',
                   color: 'var(--text-secondary)',
-                  border: '1px solid rgba(255,255,255,0.12)',
-                  borderRadius: '4px',
                   letterSpacing: '0.04em',
-                  fontFamily: 'monospace',
                 }}>
-                  {issue.rule}
+                  RULE: {issue.rule}
                 </span>
               )}
-
-              {/* WCAG badge and link */}
-              {issue.wcag && (
-                <a
-                  href={`https://www.w3.org/WAI/WCAG21/quickref/?showtechniques=141#${issue.wcag.split(',')[0].trim().replace(/\./g, '-')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    fontSize: '0.75rem',
-                    fontWeight: '700',
-                    padding: '2px 10px',
-                    backgroundColor: 'rgba(99, 102, 241, 0.15)',
-                    color: 'var(--accent-primary)',
-                    border: '1px solid rgba(99, 102, 241, 0.3)',
-                    borderRadius: '4px',
-                    textDecoration: 'none',
-                    letterSpacing: '0.05em',
-                  }}
-                  title="View WCAG Reference"
-                >
-                  WCAG {issue.wcag}
-                </a>
-              )}
-
-              {/* Severity badge */}
-              <span style={{
-                display: 'inline-block',
-                fontSize: '0.75rem',
-                fontWeight: '600',
-                padding: '2px 8px',
-                backgroundColor: severityStyle.bg,
-                color: severityStyle.color,
-                borderRadius: '4px',
-                letterSpacing: '0.05em',
-              }}>
-                {issue.severity?.toUpperCase() || 'LOW'}
-              </span>
-
-
             </div>
+
+            <h4 className="font-serif" style={{ color: 'var(--text-primary)', fontSize: '1.25rem', lineHeight: 1.3, fontWeight: 700, margin: 0 }}>
+              {issue.type || 'Accessibility Issue'}
+            </h4>
           </div>
         </div>
       </div>
 
-      {/* ── Message ── */}
-      <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1.25rem' }}>
+      <p className="font-body" style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1.5rem', flex: 1 }}>
         {issue.message}
       </p>
 
-      {/* ── AI / Rule Suggestion ── */}
+      {issue.wcag && (
+        <div style={{ marginBottom: '1rem' }}>
+          <a
+            href={`https://www.w3.org/WAI/WCAG21/quickref/?showtechniques=141#${issue.wcag.split(',')[0].trim().replace(/\./g, '-')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono hover:bg-[#111111] hover:text-[#F9F9F7]"
+            style={{
+              display: 'inline-flex',
+              fontSize: '0.75rem',
+              fontWeight: '700',
+              padding: '4px 8px',
+              color: 'var(--text-primary)',
+              border: '1px solid var(--border-color)',
+              textDecoration: 'none',
+              transition: 'all 0.2s',
+            }}
+          >
+            WCAG REF: {issue.wcag}
+          </a>
+        </div>
+      )}
+
       {issue.suggestion && (
         <div style={{
-          backgroundColor: 'rgba(99, 102, 241, 0.05)',
-          border: '1px solid var(--accent-glow)',
+          backgroundColor: 'var(--neutral-100)',
+          borderTop: '2px solid var(--border-color)',
           padding: '1rem',
-          borderRadius: 'var(--border-radius-sm)',
           display: 'flex',
           gap: '12px',
           alignItems: 'flex-start',
         }}>
-          <Sparkles size={18} color="var(--accent-primary)" style={{ marginTop: '2px', flexShrink: 0 }} />
+          <Sparkles size={16} strokeWidth={1.5} color="var(--text-primary)" style={{ marginTop: '2px', flexShrink: 0 }} />
           <div>
-            <h5 style={{ color: 'var(--accent-primary)', fontSize: '0.85rem', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>AI Suggestion</h5>
-            <p style={{ color: 'var(--text-primary)', fontSize: '0.9rem', lineHeight: '1.5' }}>
+            <h5 className="font-sans" style={{ color: 'var(--text-primary)', fontSize: '0.75rem', fontWeight: 700, margin: '0 0 4px 0', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              Editorial Suggestion
+            </h5>
+            <p className="font-body" style={{ color: 'var(--text-primary)', fontSize: '0.9rem', lineHeight: '1.5', margin: 0 }}>
               {issue.suggestion}
             </p>
           </div>

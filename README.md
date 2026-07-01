@@ -2,10 +2,10 @@
 
 <br/>
 
-# 🌐 AuditAble
+# 🗞️ AuditAble
 
-### Modern, Production-grade Web Accessibility Analyzer
-*Ensuring inclusivity through automated audits and AI-powered intelligence.*
+### The Editorial Web Accessibility Analyzer
+*Ensuring inclusivity through automated audits, AI-powered intelligence, and uncompromising design.*
 
 <br/>
 
@@ -26,11 +26,12 @@
 
 ---
 
-## 📸 Preview
+## 📰 The Newsprint Aesthetic
 
-> **Animated Gauge · Weighted Category Breakdown · WCAG-Linked Issue Cards · PDF Reporting**
-
-AuditAble features a premium **Glassmorphism UI** with a live score gauge and color-coded severity levels. Each issue is tagged with its specific **WCAG Success Criterion** and includes a direct link to the official W3C documentation for maximum credibility.
+AuditAble abandons generic modern web design for a strict, editorial **Newsprint Design System**. 
+* **Day Edition**: High contrast, crisp borders, and authoritative typography mimicking a classic broadsheet newspaper.
+* **Night Edition (Dark Mode)**: A stark, photographic negative effect using slate/charcoal tones for a sleek, low-light auditing experience.
+* **Typography**: Driven by `Playfair Display` for massive headlines and `Lora` for highly legible body copy.
 
 ---
 
@@ -111,8 +112,8 @@ AuditAble uses a two-stage weighted normalization formula:
 - **Parsing**: JSoup (for DOM traversal and live crawling)
 - **AI Integration**: Google Gemini AI (Vertex AI/AI Studio)
 - **PDF**: OpenPDF (LibrePDF)
-- **Frontend**: React 19, Vite, Framer Motion, Lucide React
-- **Styling**: Vanilla CSS (Modern Design System with CSS Variables)
+- **Frontend**: React 19, Vite, Lucide React
+- **Styling**: Vanilla CSS (Newsprint Design System with CSS Variables)
 
 ---
 
@@ -122,6 +123,7 @@ AuditAble uses a two-stage weighted normalization formula:
 - **JDK 21**
 - **Node.js 18+**
 - **Maven**
+- **Docker** *(Optional, for production deployment)*
 
 ### 1. Installation
 ```bash
@@ -130,19 +132,26 @@ cd AuditAble
 ```
 
 ### 2. Configuration
-Create `src/main/resources/application-secrets.properties`:
+Create `src/main/resources/application-secrets.properties` in the backend:
 ```properties
 gemini.api.key=YOUR_API_KEY
 ```
 
+Create `.env` in the frontend (optional for local dev):
+```properties
+VITE_API_BASE_URL=http://localhost:7070/api
+```
+
 ### 3. Run Application
-**Start Backend:**
+
+**Start Backend (Spring Boot):**
 ```bash
-mvn spring-boot:run
+cd backend
+./mvnw spring-boot:run
 ```
 *API running on `http://localhost:7070`*
 
-**Start Frontend:**
+**Start Frontend (React + Vite):**
 ```bash
 cd frontend
 npm install
@@ -153,7 +162,7 @@ npm run dev
 ### 4. Local Testing
 You can test the analyzer by pointing it at:
 `http://localhost:7070/test-page.html`
-*(This page is included in the project and contains intentional accessibility failures for testing purposes.)*
+*(This page is included in the backend and contains intentional accessibility failures for testing purposes.)*
 
 ---
 
@@ -161,6 +170,6 @@ You can test the analyzer by pointing it at:
 
 Built with ❤️ by **Garv Surve**
 
-*Making the web accessible, one scan at a time.*
+*THE WEB IS FOR EVERYONE • ACCESSIBILITY WITHOUT COMPROMISE*
 
 </div>

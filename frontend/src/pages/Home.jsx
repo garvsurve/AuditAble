@@ -1,88 +1,110 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { ShieldCheck } from 'lucide-react';
 import UrlInput from '../components/UrlInput';
+import ThemeToggle from '../components/ThemeToggle';
 
 const Home = () => {
   return (
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
       minHeight: '100vh',
-      padding: '2rem 0'
     }}>
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        style={{ textAlign: 'center', marginBottom: '3rem' }}
-      >
-        <div style={{ 
-          display: 'inline-flex', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          backgroundColor: 'var(--accent-glow)',
-          padding: '16px',
-          borderRadius: '50%',
-          marginBottom: '1.5rem',
-          color: 'var(--accent-primary)',
-          boxShadow: '0 0 30px rgba(99, 102, 241, 0.3)'
-        }}>
-          <ShieldCheck size={48} strokeWidth={1.5} />
+      {/* Newspaper Header */}
+      <header style={{
+        borderBottom: '4px solid var(--border-color)',
+        padding: '1rem 2rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        fontFamily: 'Inter, sans-serif',
+        textTransform: 'uppercase',
+        fontSize: '0.85rem',
+        fontWeight: 600,
+        letterSpacing: '0.05em'
+      }}>
+        <div style={{ width: '100px' }}></div> {/* Spacer for centering */}
+        <span style={{ fontWeight: 700 }}>AUDITABLE</span>
+        <div style={{ width: '100px', display: 'flex', justifyContent: 'flex-end' }}>
+          <ThemeToggle />
         </div>
-        <h1 className="text-gradient" style={{ marginBottom: '1rem' }}>
-          Accessibility Analyzer
-        </h1>
-        <p style={{ 
-          color: 'var(--text-secondary)', 
-          fontSize: '1.2rem',
-          maxWidth: '600px',
-          margin: '0 auto',
-          lineHeight: '1.6'
-        }}>
-          Scan your website instantly for accessibility issues. Get highly detailed AI-powered insights to ensure your site is usable for everyone.
-        </p>
-      </motion.div>
+      </header>
 
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        style={{ width: '100%' }}
-      >
-        <UrlInput />
-      </motion.div>
+      <main style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '4rem 1rem',
+      }} className="newsprint-texture">
+        
+        <div style={{ textAlign: 'center', marginBottom: '4rem', maxWidth: '800px', width: '100%' }}>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.6 }}
-        style={{
-          marginTop: '4rem',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '2rem',
-          width: '100%',
-          maxWidth: '800px'
-        }}
-      >
-        {[
-          { title: 'WCAG Compliance', desc: 'Checks against standard accessibility guidelines' },
-          { title: 'AI Suggestions', desc: 'Smart remediation hints for complex issues' },
-          { title: 'Detailed Reports', desc: 'Download comprehensive PDF breakdowns' },
-        ].map((feature, i) => (
-          <div key={i} className="glass-effect" style={{
-            padding: '1.5rem',
-            borderRadius: 'var(--border-radius-md)',
-            textAlign: 'center'
+          
+          <h1 style={{ marginBottom: '1.5rem', marginTop: 0 }}>
+            ACCESSIBILITY<br/>ANALYZER
+          </h1>
+          
+          <div style={{ 
+            height: '2px', 
+            backgroundColor: 'var(--border-color)', 
+            width: '100px', 
+            margin: '0 auto 1.5rem auto' 
+          }} />
+          
+          <p className="font-body" style={{ 
+            color: 'var(--text-secondary)', 
+            fontSize: '1.25rem',
+            lineHeight: '1.8',
+            maxWidth: '650px',
+            margin: '0 auto'
           }}>
-            <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'var(--text-primary)' }}>{feature.title}</h3>
-            <p style={{ color: 'var(--text-tertiary)', fontSize: '0.9rem' }}>{feature.desc}</p>
-          </div>
-        ))}
-      </motion.div>
+            <strong>S</strong>can your website instantly for accessibility issues. Get highly detailed AI-powered insights to ensure your site is usable for everyone.
+          </p>
+        </div>
+
+        <div style={{ width: '100%', marginBottom: '4rem' }}>
+          <UrlInput />
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          width: '100%',
+          maxWidth: '1000px',
+          borderTop: '2px solid var(--border-color)',
+          borderLeft: '1px solid var(--border-color)',
+        }}>
+          {[
+            { title: 'WCAG Compliance', desc: 'Validates against global accessibility standards. Rigorous checks against the standard.' },
+            { title: 'AI Remediation', desc: 'Smart remediation hints for complex issues. Employs advanced neural nets.' },
+            { title: 'Detailed Reports', desc: 'Download comprehensive PDF breakdowns. The paper trail you need.' },
+          ].map((feature, i) => (
+            <div key={i} className="hard-shadow-hover" style={{
+              padding: '2rem',
+              textAlign: 'left',
+              borderRight: '1px solid var(--border-color)',
+              borderBottom: '1px solid var(--border-color)',
+              backgroundColor: 'var(--bg-primary)'
+            }}>
+              <h3 className="font-serif" style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>{feature.title}</h3>
+              <p className="font-body" style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', margin: 0 }}>{feature.desc}</p>
+            </div>
+          ))}
+        </div>
+      </main>
+      
+      <footer style={{
+        borderTop: '1px solid var(--border-color)',
+        padding: '1.5rem 2rem',
+        textAlign: 'center',
+        fontFamily: 'Inter, sans-serif',
+        textTransform: 'uppercase',
+        fontSize: '0.75rem',
+        fontWeight: 600,
+        letterSpacing: '0.05em'
+      }}>
+        THE WEB IS FOR EVERYONE • ACCESSIBILITY WITHOUT COMPROMISE
+      </footer>
     </div>
   );
 };

@@ -1,0 +1,69 @@
+# Project Documentation: AuditAble
+
+## 1. Overview
+AuditAble is a sophisticated web accessibility auditing tool designed to help developers and designers ensure their websites comply with the **WCAG 2.1 (Web Content Accessibility Guidelines)**. It performs comprehensive DOM analysis, identifies accessibility violations, calculates a compliance score, and provides AI-powered remediation suggestions.
+
+---
+
+## 2. Technology Stack
+
+### Backend (Core Processing Engine)
+*   **Framework**: Spring Boot 4.0.5 (Java 21)
+*   **HTML Parsing**: Jsoup (Robust library for fetching and analyzing web page DOM)
+*   **AI Integration**: Google Gemini API (specifically `gemini-2.5-flash`) for real-time, intelligent code fixes.
+*   **Reporting**: OpenPDF (Library used to dynamically generate professional PDF audit reports).
+*   **Architecture**: Modular, rule-based design.
+*   **Build Tool**: Maven.
+*   **Utilities**: Lombok (boilerplate reduction), SLF4J (logging).
+
+### Frontend (User Interface)
+*   **Framework**: React 19 (utilizing functional components and modern hooks).
+*   **Build Tool**: Vite 8 (extremely fast development and bundling).
+*   **Styling & UI**: Premium CSS with **Framer Motion** for smooth, high-end animations and transitions.
+*   **Icons**: Lucide React (modern, crisp icon set).
+*   **State Management**: React Hooks (useState, useEffect).
+*   **Networking**: Axios for asynchronous REST API communication.
+
+---
+
+## 3. Project Architecture
+
+The project follows a decoupled **Client-Server Architecture**:
+
+### Backend Structure (`org.garvsurve.auditable`)
+*   **Controller Layer**: `ScanController` exposes REST endpoints (`/api/scan`, `/api/scan/report/pdf`) to handle requests from the frontend.
+*   **Service Layer**:
+    *   `ScanService`: Orchestrates the scanning process.
+    *   `ScoreService`: Logic to calculate scores (0-100) based on weighted issue severity.
+    *   `AiSuggestionService`: Communicates with Google's Gemini LLM to interpret accessibility failures and provide corrected code snippets.
+    *   `PdfService`: Converts JSON report data into a styled PDF document.
+*   **Rule Engine**: A collection of specific logic classes located in the `rules` package. Each class (e.g., `ImageAltRule`, `ColorContrastRule`) focuses on a specific WCAG criterion.
+*   **Data Models**: DTOs (Data Transfer Objects) and Models for structured data exchange (Issues, Scores, Metadata).
+
+### Frontend Structure
+*   **Components**: Modular UI elements like `ScoreCard`, `IssueList`, `CategoryBreakdown`, and `UrlInput`.
+*   **Services**: `api.js` centralizes backend communication logic.
+*   **Pages**: `Home.jsx` serves as the primary dashboard.
+
+---
+
+## 4. Key Functional Features
+
+1.  **Automated URL Scanning**: Users enter a URL, and the backend performs a real-time audit of the live site.
+2.  **Comprehensive Issue Detection**:
+    *   **ARIA Roles**: Validates role attributes and requirements.
+    *   **Forms & Inputs**: Checks for missing labels and broken associations.
+    *   **Images**: Ensures alt text is present and meaningful.
+    *   **Semantics**: Validates heading hierarchies (H1 -> H6) and landmark usage (header, nav, main).
+    *   **Links**: Flags vague link text (e.g., "click here").
+3.  **AI Remediation (Gemini Integration)**: For high-priority issues, the system sends the failing HTML snippet to Gemini, which returns:
+    *   An explanation of the problem.
+    *   The specific fix required.
+    *   A corrected HTML example for the developer to copy-paste.
+4.  **Accessibility Scorecard**: Translates technical violations into a human-readable score.
+5.  **PDF Reports**: Allows users to download a formal version of the audit results for documentation or client review.
+
+---
+
+## 5. Summary
+AuditAble bridges the gap between automated testing and human understanding by leveraging modern AI. It doesn't just tell you what's broken; it tells you why and shows you exactly how to fix it using state-of-the-art web technologies.

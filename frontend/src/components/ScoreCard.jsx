@@ -1,105 +1,80 @@
-import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
 
 const ScoreCard = ({ score }) => {
   const getScoreInfo = (s) => {
-    if (s >= 90) return { color: 'var(--success-color)', bg: 'var(--success-bg)', label: 'Excellent' };
-    if (s >= 70) return { color: 'var(--warning-color)', bg: 'var(--warning-bg)', label: 'Needs Improvement' };
-    return { color: 'var(--danger-color)', bg: 'var(--danger-bg)', label: 'Poor' };
+    if (s >= 90) return { label: 'Excellent', color: 'var(--text-primary)' };
+    if (s >= 70) return { label: 'Needs Improvement', color: 'var(--text-secondary)' };
+    return { label: 'Poor', color: 'var(--accent-primary)' }; // Red for poor
   };
 
   const info = getScoreInfo(score);
-  
-  // Circumference for circular progress
-  const radius = 60;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (score / 100) * circumference;
 
   return (
-    <div className="glass-effect" style={{
-      padding: '2rem',
-      borderRadius: 'var(--border-radius-lg)',
+    <div className="news-card sharp-corners" style={{
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100%'
+      justifyContent: 'space-between',
+      height: '100%',
+      position: 'relative'
     }}>
-      <h3 style={{ marginBottom: '1.5rem', color: 'var(--text-secondary)' }}>Overall Accessibility</h3>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        borderBottom: '4px solid var(--border-color)',
+        paddingBottom: '1rem',
+        marginBottom: '1rem'
+      }}>
+        <h3 className="font-sans" style={{ fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>
+          Accessibility Rating
+        </h3>
+        <span className="font-mono" style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em' }}>FIG. 1</span>
+      </div>
       
-      <div style={{ position: 'relative', width: '160px', height: '160px' }}>
-        {/* Background circle */}
-        <svg fill="transparent" width="160" height="160" viewBox="0 0 160 160">
-          <circle
-            cx="80"
-            cy="80"
-            r={radius}
-            stroke="var(--border-color)"
-            strokeWidth="12"
-          />
-        </svg>
-
-        {/* Animated progress circle */}
-        <svg 
-          fill="transparent" 
-          width="160" 
-          height="160" 
-          viewBox="0 0 160 160"
-          style={{ position: 'absolute', top: 0, left: 0, transform: 'rotate(-90deg)' }}
-        >
-          <motion.circle
-            cx="80"
-            cy="80"
-            r={radius}
-            stroke={info.color}
-            strokeWidth="12"
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            initial={{ strokeDashoffset: circumference }}
-            animate={{ strokeDashoffset }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-          />
-        </svg>
-
-        {/* Score text inside circle */}
+      <div style={{ 
+        flex: 1, 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        padding: '2rem 0' 
+      }}>
         <div style={{
-          position: 'absolute',
-          top: '0',
-          left: '0',
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center'
+          fontSize: '8rem',
+          fontWeight: '900',
+          fontFamily: 'Playfair Display, serif',
+          lineHeight: '0.8',
+          color: info.color,
+          letterSpacing: '-0.05em'
         }}>
-          <motion.span 
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5 }}
-            style={{ fontSize: '3rem', fontWeight: '800', color: 'var(--text-primary)', lineHeight: '1' }}
-          >
-            {score}
-          </motion.span>
+          {score}
+        </div>
+        <div style={{
+          fontSize: '2rem',
+          fontWeight: '700',
+          fontFamily: 'Playfair Display, serif',
+          color: info.color,
+          alignSelf: 'flex-start',
+          marginTop: '0.5rem'
+        }}>
+          /100
         </div>
       </div>
       
-      <motion.div 
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
-        style={{
-          marginTop: '1.5rem',
-          padding: '6px 16px',
-          backgroundColor: info.bg,
-          color: info.color,
-          borderRadius: '999px',
-          fontWeight: '600',
-          fontSize: '0.9rem'
-        }}
-      >
-        {info.label}
-      </motion.div>
+      <div style={{
+        paddingTop: '1rem',
+        borderTop: '1px solid var(--border-color)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <span className="font-body" style={{ fontStyle: 'italic', color: 'var(--text-secondary)' }}>Overall Assessment</span>
+        <span className="news-badge sharp-corners" style={{
+          backgroundColor: info.color === 'var(--accent-primary)' ? 'var(--accent-primary)' : 'var(--text-primary)',
+          color: 'var(--bg-primary)'
+        }}>
+          {info.label}
+        </span>
+      </div>
     </div>
   );
 };
